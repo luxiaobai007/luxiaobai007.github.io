@@ -17,23 +17,23 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>Hexo</title>
-  <meta name="description" content="title: Nginx全面了解如何配置  [toc] 介绍NginxNginx是一个高性能的HTTP和反向代理Web服务器.同时也提供了IMAP&#x2F;POP3&#x2F;SMTP服务.占有内存少、并发能力强。 正向代理在客户端（浏览器）配置代理服务器，通过代理服务器进行互联网访问 反向代理客户端对代理是无感知的，不需要任何配置就可以访问。只需要将请求发送到反向代理服务器，由反向代理服务器去选择目标服务器获取">
+  <title>全面了解Nginx如何配置 | Hexo</title>
+  <meta name="description" content="[toc] 介绍NginxNginx是一个高性能的HTTP和反向代理Web服务器.同时也提供了IMAP&#x2F;POP3&#x2F;SMTP服务.占有内存少、并发能力强。 正向代理在客户端（浏览器）配置代理服务器，通过代理服务器进行互联网访问 反向代理客户端对代理是无感知的，不需要任何配置就可以访问。只需要将请求发送到反向代理服务器，由反向代理服务器去选择目标服务器获取数据后，在返回给客户端，此时反向代理服务器和目">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/2021/08/31/nginx/index.html">
+<meta property="og:title" content="全面了解Nginx如何配置">
+<meta property="og:url" content="http://www.luxiaobai.cn/2021/08/31/nginx/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="title: Nginx全面了解如何配置  [toc] 介绍NginxNginx是一个高性能的HTTP和反向代理Web服务器.同时也提供了IMAP&#x2F;POP3&#x2F;SMTP服务.占有内存少、并发能力强。 正向代理在客户端（浏览器）配置代理服务器，通过代理服务器进行互联网访问 反向代理客户端对代理是无感知的，不需要任何配置就可以访问。只需要将请求发送到反向代理服务器，由反向代理服务器去选择目标服务器获取">
+<meta property="og:description" content="[toc] 介绍NginxNginx是一个高性能的HTTP和反向代理Web服务器.同时也提供了IMAP&#x2F;POP3&#x2F;SMTP服务.占有内存少、并发能力强。 正向代理在客户端（浏览器）配置代理服务器，通过代理服务器进行互联网访问 反向代理客户端对代理是无感知的，不需要任何配置就可以访问。只需要将请求发送到反向代理服务器，由反向代理服务器去选择目标服务器获取数据后，在返回给客户端，此时反向代理服务器和目">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/Users/lushengyang/Desktop/LSY/document/image/%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://www.luxiaobai.cn/Users/lushengyang/Desktop/LSY/document/image/%E6%88%AA%E5%9B%BE.png">
 <meta property="og:image" content="http://qiliu.luxiaobai.cn/img/%E9%AB%98%E5%8F%AF%E7%94%A8nginx%E9%9B%86%E7%BE%A4.png">
 <meta property="article:published_time" content="2021-08-31T08:37:31.961Z">
-<meta property="article:modified_time" content="2021-10-06T08:46:42.382Z">
+<meta property="article:modified_time" content="2021-10-06T08:50:32.495Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/Users/lushengyang/Desktop/LSY/document/image/%E6%88%AA%E5%9B%BE.png">
+<meta name="twitter:image" content="http://www.luxiaobai.cn/Users/lushengyang/Desktop/LSY/document/image/%E6%88%AA%E5%9B%BE.png">
   <!-- Canonical links -->
-  <link rel="canonical" href="http://example.com/2021/08/31/nginx/index.html">
+  <link rel="canonical" href="http://www.luxiaobai.cn/2021/08/31/nginx/index.html">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -261,7 +261,7 @@
                 
               </p>
               <p class="item-title">
-                <a href="/2021/08/31/nginx/" class="title">(no title)</a>
+                <a href="/2021/08/31/nginx/" class="title">全面了解Nginx如何配置</a>
               </p>
               <p class="item-date">
                 <time datetime="2021-08-31T08:37:31.961Z" itemprop="datePublished">2021-08-31</time>
@@ -285,6 +285,14 @@
   <article id="post-nginx" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      全面了解Nginx如何配置
+    </h1>
+  
+
       
       <div class="article-meta">
         <span class="article-date">
@@ -311,10 +319,7 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <hr>
-<p>title: Nginx全面了解如何配置</p>
-<hr>
-<p>[toc]</p>
+        <p>[toc]</p>
 <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><h2 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h2><p>Nginx是一个高性能的HTTP和反向代理Web服务器.同时也提供了IMAP/POP3/SMTP服务.占有内存少、并发能力强。</p>
 <h3 id="正向代理"><a href="#正向代理" class="headerlink" title="正向代理"></a><strong>正向代理</strong></h3><p>在客户端（浏览器）配置代理服务器，通过代理服务器进行互联网访问</p>
 <h3 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a><strong>反向代理</strong></h3><p>客户端对代理是无感知的，不需要任何配置就可以访问。只需要将请求发送到反向代理服务器，由反向代理服务器去选择目标服务器获取数据后，在返回给客户端，此时反向代理服务器和目标服务器对外就是一个服务器，暴露的是代理服务器地址，隐藏了真实服务器IP地址。</p>
@@ -475,7 +480,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="http://example.com/2021/08/31/nginx/" title="" target="_blank" rel="external">http://example.com/2021/08/31/nginx/</a>
+      <a href="http://www.luxiaobai.cn/2021/08/31/nginx/" title="全面了解Nginx如何配置" target="_blank" rel="external">http://www.luxiaobai.cn/2021/08/31/nginx/</a>
     </li>
     
     <li class="post-copyright-license">
