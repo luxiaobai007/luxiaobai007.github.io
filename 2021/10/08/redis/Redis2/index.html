@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Redis6入门学习(二) | Hexo</title>
+  <meta name="description" content="[toc] Redis6配置文件12&#x2F;&#x2F;配置文件路径vim &#x2F;etc&#x2F;redis&#x2F;redis.conf  Units单位配置大小单位,开头定义了一些基本的度量单位，只支持bytes，不支持bit大小写不敏感  INCLUDES包含 类似jsp中的include，多实例的情况可以把公用的配置文件提取出来 网络相关配置bind默认情况bind&#x3D;127.0.0.1只能接受本机的访问请求,不写的情况下，无">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis6入门学习(二)">
+<meta property="og:url" content="https://luxiaobai.cn/2021/10/08/redis/Redis2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="[toc] Redis6配置文件12&#x2F;&#x2F;配置文件路径vim &#x2F;etc&#x2F;redis&#x2F;redis.conf  Units单位配置大小单位,开头定义了一些基本的度量单位，只支持bytes，不支持bit大小写不敏感  INCLUDES包含 类似jsp中的include，多实例的情况可以把公用的配置文件提取出来 网络相关配置bind默认情况bind&#x3D;127.0.0.1只能接受本机的访问请求,不写的情况下，无">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://qiliu.luxiaobai.cn/img/redisconf1.png">
+<meta property="og:image" content="http://qiliu.luxiaobai.cn/img/redis6.png">
+<meta property="og:image" content="http://qiliu.luxiaobai.cn/img/rediscof.png">
+<meta property="og:image" content="http://qiliu.luxiaobai.cn/img/redisconf2.png">
+<meta property="og:image" content="http://qiliu.luxiaobai.cn/img/redisconf3.png">
+<meta property="og:image" content="http://qiliu.luxiaobai.cn/img/redisconf4.png">
+<meta property="og:image" content="http://qiliu.luxiaobai.cn/img/redisconf5.png">
+<meta property="og:image" content="http://qiliu.luxiaobai.cn/img/redisconf6.png">
+<meta property="og:image" content="http://qiliu.luxiaobai.cn/img/redisconf7.png">
+<meta property="og:image" content="http://qiliu.luxiaobai.cn/img/redisconf8.png">
+<meta property="og:image" content="http://qiliu.luxiaobai.cn/img/redispub1.png">
+<meta property="og:image" content="http://qiliu.luxiaobai.cn/img/redispub2.png">
+<meta property="og:image" content="http://qiliu.luxiaobai.cn/img/redispub4.png">
+<meta property="og:image" content="http://qiliu.luxiaobai.cn/img/redisdata1.png">
+<meta property="og:image" content="http://qiliu.luxiaobai.cn/img/redisdata2.png">
+<meta property="og:image" content="http://qiliu.luxiaobai.cn/img/redisdata3.png">
+<meta property="article:published_time" content="2021-10-08T03:01:30.257Z">
+<meta property="article:modified_time" content="2021-10-11T01:54:16.403Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://qiliu.luxiaobai.cn/img/redisconf1.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://luxiaobai.cn/2021/10/08/redis/Redis2/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/luxiaobai007" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">路小白</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Server Developer &amp; Programmer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> LongYan, China</small>
+        <!-- 
+          <p class="text-muted">生命太短暂,不要去做一些根本没有人想要的东西。</p>
+           -->
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/luxiaobai007" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/luxiaobai404" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://blog.csdn.net/weixin_45268711" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2021/10/11/redis/Redis3/" class="title">Redis6入门学习(三)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-11T01:54:21.539Z" itemprop="datePublished">2021-10-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2021/10/08/redis/Redis2/" class="title">Redis6入门学习(二)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-08T03:01:30.257Z" itemprop="datePublished">2021-10-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2021/10/08/redis/Redis1/" class="title">Redis6入门学习(一)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-08T02:34:57.707Z" itemprop="datePublished">2021-10-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2021/10/06/nginx/" class="title">全面了解Nginx如何配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-06T13:01:24.000Z" itemprop="datePublished">2021-10-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2021/10/04/hello-world/" class="title">Hello World</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-04T03:35:04.791Z" itemprop="datePublished">2021-10-04</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis6%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text">Redis6配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Units%E5%8D%95%E4%BD%8D"><span class="toc-number">1.1.</span> <span class="toc-text">Units单位</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#INCLUDES%E5%8C%85%E5%90%AB"><span class="toc-number">1.2.</span> <span class="toc-text">INCLUDES包含</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE"><span class="toc-number">1.3.</span> <span class="toc-text">网络相关配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#bind"><span class="toc-number">1.3.1.</span> <span class="toc-text">bind</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#protected-mode"><span class="toc-number">1.3.2.</span> <span class="toc-text">protected-mode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tcp-backlog"><span class="toc-number">1.3.3.</span> <span class="toc-text">tcp-backlog</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#timeout"><span class="toc-number">1.3.4.</span> <span class="toc-text">timeout</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tcp-keepalive"><span class="toc-number">1.3.5.</span> <span class="toc-text">tcp-keepalive</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GENERAL%E9%80%9A%E7%94%A8"><span class="toc-number">1.4.</span> <span class="toc-text">GENERAL通用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#daemonize"><span class="toc-number">1.4.1.</span> <span class="toc-text">daemonize</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pidfile"><span class="toc-number">1.4.2.</span> <span class="toc-text">pidfile</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#loglevel"><span class="toc-number">1.4.3.</span> <span class="toc-text">loglevel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#logfile"><span class="toc-number">1.4.4.</span> <span class="toc-text">logfile</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#databases16"><span class="toc-number">1.4.5.</span> <span class="toc-text">databases16</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SECURITY%E5%AE%89%E5%85%A8"><span class="toc-number">1.5.</span> <span class="toc-text">SECURITY安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LIMITS%E9%99%90%E5%88%B6"><span class="toc-number">1.6.</span> <span class="toc-text">LIMITS限制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#maxclients"><span class="toc-number">1.6.1.</span> <span class="toc-text">maxclients</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#maxmemory"><span class="toc-number">1.6.2.</span> <span class="toc-text">maxmemory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#maxmemory-policy"><span class="toc-number">1.6.3.</span> <span class="toc-text">maxmemory-policy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#maxmemory-samples"><span class="toc-number">1.6.4.</span> <span class="toc-text">maxmemory-samples</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis6%E7%9A%84%E5%8F%91%E5%B8%83%E5%92%8C%E8%AE%A2%E9%98%85"><span class="toc-number">2.</span> <span class="toc-text">Redis6的发布和订阅</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E7%9A%84%E5%8F%91%E5%B8%83%E5%92%8C%E8%AE%A2%E9%98%85"><span class="toc-number">2.1.</span> <span class="toc-text">Redis的发布和订阅</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.2.</span> <span class="toc-text">发布订阅命令行实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis6%E6%96%B0%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">3.</span> <span class="toc-text">Redis6新数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Bitmaps"><span class="toc-number">3.1.</span> <span class="toc-text">Bitmaps</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4"><span class="toc-number">3.1.1.</span> <span class="toc-text">命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B"><span class="toc-number">3.1.2.</span> <span class="toc-text">实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#getbit"><span class="toc-number">3.2.</span> <span class="toc-text">getbit</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B-1"><span class="toc-number">3.2.1.</span> <span class="toc-text">实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bitcount"><span class="toc-number">3.3.</span> <span class="toc-text">bitcount</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B-2"><span class="toc-number">3.3.1.</span> <span class="toc-text">实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bitop"><span class="toc-number">3.4.</span> <span class="toc-text">bitop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bitmaps%E4%B8%8Eset%E5%AF%B9%E6%AF%94"><span class="toc-number">3.5.</span> <span class="toc-text">Bitmaps与set对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HyperLogLog"><span class="toc-number">3.6.</span> <span class="toc-text">HyperLogLog</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4-1"><span class="toc-number">3.6.1.</span> <span class="toc-text">命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#pfadd"><span class="toc-number">3.6.1.1.</span> <span class="toc-text">pfadd</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#pfcount"><span class="toc-number">3.6.1.2.</span> <span class="toc-text">pfcount</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#pfmerge"><span class="toc-number">3.6.1.3.</span> <span class="toc-text">pfmerge</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Geospatial"><span class="toc-number">3.7.</span> <span class="toc-text">Geospatial</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4-2"><span class="toc-number">3.7.1.</span> <span class="toc-text">命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#geopos"><span class="toc-number">3.7.1.1.</span> <span class="toc-text">geopos</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#georadius"><span class="toc-number">3.7.1.2.</span> <span class="toc-text">georadius</span></a></li></ol></li></ol></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-redis/Redis2" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Redis6入门学习(二)
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/10/08/redis/Redis2/" class="article-date">
+	  <time datetime="2021-10-08T03:01:30.257Z" itemprop="datePublished">2021-10-08</time>
+	</a>
+</span>
+        
+        
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/10/08/redis/Redis2/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>[toc]</p>
+<h1 id="Redis6配置文件"><a href="#Redis6配置文件" class="headerlink" title="Redis6配置文件"></a>Redis6配置文件</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//配置文件路径</span><br><span class="line">vim /etc/redis/redis.conf</span><br></pre></td></tr></table></figure>
+
+<h2 id="Units单位"><a href="#Units单位" class="headerlink" title="Units单位"></a><strong>Units单位</strong></h2><p>配置大小单位,开头定义了一些基本的度量单位，只支持bytes，不支持bit大小写不敏感</p>
+<p><img src="http://qiliu.luxiaobai.cn/img/redisconf1.png" alt="redisconf1"></p>
+<h2 id="INCLUDES包含"><a href="#INCLUDES包含" class="headerlink" title="INCLUDES包含"></a><strong>INCLUDES包含</strong></h2><p><img src="http://qiliu.luxiaobai.cn/img/redis6.png" alt="redis6"></p>
+<p>类似jsp中的include，多实例的情况可以把公用的配置文件提取出来</p>
+<h2 id="网络相关配置"><a href="#网络相关配置" class="headerlink" title="网络相关配置"></a>网络相关配置</h2><h3 id="bind"><a href="#bind" class="headerlink" title="bind"></a>bind</h3><p>默认情况bind=127.0.0.1只能接受本机的访问请求,不写的情况下，无限制接受任何ip地址的访问</p>
+<p>生产环境肯定要写你应用服务器的地址；服务器是需要远程访问的，所以需要将其注释掉</p>
+<p>如果开启了protected-mode，那么在没有设定bind ip且没有设密码的情况下，Redis只允许接受本机的响应</p>
+<p><img src="http://qiliu.luxiaobai.cn/img/rediscof.png" alt="rediscof"></p>
+<p>保存配置,重启服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redis-cli</span><br><span class="line">shutdown</span><br><span class="line">redis-server /etc/redis.conf</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="protected-mode"><a href="#protected-mode" class="headerlink" title="protected-mode"></a><strong>protected-mode</strong></h3><p>protected-mode配置，默认是yes，即开启。设置外部网络连接redis服务，设置方式如下：</p>
+<p>1、关闭protected-mode模式，此时外部网络可以直接访问</p>
+<p>2、开启protected-mode保护模式，需配置bind ip或者设置访问密码</p>
+<h3 id="tcp-backlog"><a href="#tcp-backlog" class="headerlink" title="tcp-backlog"></a><strong>tcp-backlog</strong></h3><p>设置tcp的backlog，backlog其实是一个连接队列，backlog队列总和=未完成三次握手队列 + 已经完成三次握手队列。</p>
+<p>在高并发环境下你需要一个高backlog值来避免慢客户端连接问题。</p>
+<p>注意Linux内核会将这个值减小到/proc/sys/net/core/somaxconn的值（128），所以需要确认增大/proc/sys/net/core/somaxconn和/proc/sys/net/ipv4/tcp_max_syn_backlog（128）两个值来达到想要的效果</p>
+<p><img src="http://qiliu.luxiaobai.cn/img/redisconf2.png" alt="redisconf2"></p>
+<h3 id="timeout"><a href="#timeout" class="headerlink" title="timeout"></a><strong>timeout</strong></h3><p>一个空闲的客户端维持多少秒会关闭，0表示关闭该功能。即永不关闭。</p>
+<h3 id="tcp-keepalive"><a href="#tcp-keepalive" class="headerlink" title="tcp-keepalive"></a><strong>tcp-keepalive</strong></h3><p>对访问客户端的一种心跳检测，每个n秒检测一次。单位为秒，如果设置为0，则不会进行Keepalive检测，建议设置成60</p>
+<p><img src="http://qiliu.luxiaobai.cn/img/redisconf3.png" alt="redisconf3"></p>
+<h2 id="GENERAL通用"><a href="#GENERAL通用" class="headerlink" title="GENERAL通用"></a><strong>GENERAL通用</strong></h2><h3 id="daemonize"><a href="#daemonize" class="headerlink" title="daemonize"></a><strong>daemonize</strong></h3><p>是否为后台进程，设置为yes 守护进程，后台启动</p>
+<h3 id="pidfile"><a href="#pidfile" class="headerlink" title="pidfile"></a><strong>pidfile</strong></h3><p>存放pid文件的位置，每个实例会产生一个不同的pid文件</p>
+<h3 id="loglevel"><a href="#loglevel" class="headerlink" title="loglevel"></a><strong>loglevel</strong></h3><p>指定日志记录级别，Redis总共支持四个级别：debug、verbose、notice、warning，默认为notice</p>
+<p>四个级别根据使用阶段来选择，<strong>生产环境选择notice 或者warning</strong></p>
+<h3 id="logfile"><a href="#logfile" class="headerlink" title="logfile"></a><strong>logfile</strong></h3><h3 id="databases16"><a href="#databases16" class="headerlink" title="databases16"></a><strong>databases16</strong></h3><p>设定库的数量 默认16，默认数据库为0，可以使用SELECT <dbid>命令在连接上指定数据库id</p>
+<h2 id="SECURITY安全"><a href="#SECURITY安全" class="headerlink" title="SECURITY安全"></a><strong>SECURITY安全</strong></h2><p><strong>设置密码</strong></p>
+<p><img src="http://qiliu.luxiaobai.cn/img/redisconf4.png" alt="redisconf4"></p>
+<p>访问密码的查看、设置和取消</p>
+<p>在命令中设置密码，只是临时的。重启redis服务器，密码就还原了。</p>
+<p>永久设置，需要再配置文件中进行设置。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@iZbp13941xpzjmefjge9chZ:/etc# redis-cli</span><br><span class="line">127.0.0.1:6379&gt; config get requirepass</span><br><span class="line">1) &quot;requirepass&quot;</span><br><span class="line">2) &quot;&quot;</span><br><span class="line">127.0.0.1:6379&gt; config set requirepass &quot;123456&quot;</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; config get requirepass</span><br><span class="line">(error) NOAUTH Authentication required.</span><br><span class="line">127.0.0.1:6379&gt; auth 123456</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="LIMITS限制"><a href="#LIMITS限制" class="headerlink" title="LIMITS限制"></a><strong>LIMITS限制</strong></h2><h3 id="maxclients"><a href="#maxclients" class="headerlink" title="maxclients"></a><strong>maxclients</strong></h3><p>设置redis同时可以与多少个客户端进行连接。</p>
+<p>默认情况下为10000个客户端。</p>
+<p>如果达到了此限制，redis则会拒绝新的连接请求，并且向这些连接请求方发出“max number of clients reached”以作回应。</p>
+<p><img src="http://qiliu.luxiaobai.cn/img/redisconf5.png" alt="redisconf5"></p>
+<h3 id="maxmemory"><a href="#maxmemory" class="headerlink" title="maxmemory"></a><strong>maxmemory</strong></h3><ul>
+<li>建议必须设置，否则，将内存占满，造成服务器宕机</li>
+<li>设置redis可以使用的内存量。一旦到达内存使用上限，redis将会试图移除内部数据，移除规则可以通过<strong>maxmemory-policy</strong>来指定。</li>
+<li>如果redis无法根据移除规则来移除内存中的数据，或者设置了“不允许移除”，那么redis则会针对那些需要申请内存的指令返回错误信息，比如SET、LPUSH等。</li>
+<li>但是对于无内存申请的指令，仍然会正常响应，比如GET等。如果你的redis是主redis（说明你的redis有从redis），那么在设置内存使用上限时，需要在系统中留出一些内存空间给同步队列缓存，只有在你设置的是“不移除”的情况下，才不用考虑这个因素。</li>
+</ul>
+<p><img src="http://qiliu.luxiaobai.cn/img/redisconf6.png" alt="redisconf6"></p>
+<h3 id="maxmemory-policy"><a href="#maxmemory-policy" class="headerlink" title="maxmemory-policy"></a><strong>maxmemory-policy</strong></h3><p><strong>volatile-lru</strong>：使用LRU算法移除key，只对设置了过期时间的键；（最近最少使用）</p>
+<p><strong>allkeys-lru</strong>：在所有集合key中，使用LRU算法移除key</p>
+<p><strong>volatile-random</strong>：在过期集合中移除随机的key，只对设置了过期时间的键</p>
+<p><strong>allkeys-random</strong>：在所有集合key中，移除随机的key</p>
+<p><strong>volatile-ttl</strong>：移除那些TTL值最小的key，即那些最近要过期的key</p>
+<p><strong>noeviction</strong>：不进行移除。针对写操作，只是返回错误信息</p>
+<p><img src="http://qiliu.luxiaobai.cn/img/redisconf7.png" alt="redisconf7"></p>
+<h3 id="maxmemory-samples"><a href="#maxmemory-samples" class="headerlink" title="maxmemory-samples"></a><strong>maxmemory-samples</strong></h3><ul>
+<li>设置样本数量，LRU算法和最小TTL算法都并非是精确的算法，而是估算值，所以你可以设置样本的大小，redis默认会检查这么多个key并选择其中LRU的那个。</li>
+<li>一般设置3到7的数字，数值越小样本越不准确，但性能消耗越小。</li>
+</ul>
+<p><img src="http://qiliu.luxiaobai.cn/img/redisconf8.png" alt="redisconf8"></p>
+<h1 id="Redis6的发布和订阅"><a href="#Redis6的发布和订阅" class="headerlink" title="Redis6的发布和订阅"></a>Redis6的发布和订阅</h1><blockquote>
+<p>Redis 发布订阅 (pub/sub) 是一种消息通信模式：发送者 (pub) 发送消息，订阅者 (sub) 接收消息。</p>
+<p>Redis 客户端可以订阅任意数量的频道。</p>
+</blockquote>
+<h2 id="Redis的发布和订阅"><a href="#Redis的发布和订阅" class="headerlink" title="Redis的发布和订阅"></a><strong>Redis的发布和订阅</strong></h2><p><strong>1、客户端可以订阅频道</strong></p>
+<p><img src="http://qiliu.luxiaobai.cn/img/redispub1.png" alt="redispub1"></p>
+<p><strong>2、当给这个频道发布消息后，消息就会发送给订阅的客户端</strong></p>
+<p><img src="http://qiliu.luxiaobai.cn/img/redispub2.png" alt="redispub2"></p>
+<h2 id="发布订阅命令行实现"><a href="#发布订阅命令行实现" class="headerlink" title="发布订阅命令行实现"></a><strong>发布订阅命令行实现</strong></h2><p>1、 打开一个客户端订阅channel1</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SUBSCRIBE channel1</span><br></pre></td></tr></table></figure>
+
+<p>2、打开另一个客户端，给channel1发布消息hello</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; publish channel hello (integer) 1</span><br></pre></td></tr></table></figure>
+
+<p>返回的1是订阅者数量</p>
+<p>3、打开第一个客户端可以看到发送的消息</p>
+<p><img src="http://qiliu.luxiaobai.cn/img/redispub4.png" alt="redispub4"></p>
+<blockquote>
+<p>发布的消息没有持久化，如果在订阅的客户端收不到hello，只能收到订阅后发布的消息</p>
+</blockquote>
+<h1 id="Redis6新数据类型"><a href="#Redis6新数据类型" class="headerlink" title="Redis6新数据类型"></a><strong>Redis6新数据类型</strong></h1><h2 id="Bitmaps"><a href="#Bitmaps" class="headerlink" title="Bitmaps"></a><strong>Bitmaps</strong></h2><blockquote>
+<p>现代计算机用二进制（位） 作为信息的基础单位， 1个字节等于8位， 例如“abc”字符串是由3个字节组成， 但实际在计算机存储时将其用二进制表示， “abc”分别对应的ASCII码分别是97、 98、 99， 对应的二进制分别是01100001、 01100010和01100011</p>
+</blockquote>
+<p><img src="http://qiliu.luxiaobai.cn/img/redisdata1.png" alt="redisdata1"></p>
+<p>合理地使用操作位能够有效地提高内存使用率和开发效率。</p>
+<p>Redis提供了Bitmaps这个“数据类型”可以实现对位的操作：</p>
+<p>（1） Bitmaps本身不是一种数据类型， 实际上它就是字符串（key-value） ， 但是它可以对字符串的位进行操作。</p>
+<p>（2） Bitmaps单独提供了一套命令， 所以在Redis中使用Bitmaps和使用字符串的方法不太相同。 可以把Bitmaps想象成一个以位为单位的数组， 数组的每个单元只能存储0和1， 数组的下标在Bitmaps中叫做偏移量。</p>
+<p><img src="http://qiliu.luxiaobai.cn/img/redisdata2.png" alt="redisdata2"></p>
+<h3 id="命令"><a href="#命令" class="headerlink" title="命令"></a><strong>命令</strong></h3><p><strong>setbit</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setbit &lt;key&gt;&lt;offset&gt;&lt;value&gt;                 设置Bitmaps中某个偏移量的值（0或1）</span><br></pre></td></tr></table></figure>
+
+<p>offset:偏移量从0开始</p>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>每个独立用户是否访问过网站存放在Bitmaps中， 将访问的用户记做1， 没有访问的用户记做0， 用偏移量作为用户的id。</p>
+<p>设置键的第offset个位的值（从0算起） ， 假设现在有20个用户，userid=1， 6， 11， 15， 19的用户对网站进行了访问， 那么当前Bitmaps初始化结果如图</p>
+<p><img src="http://qiliu.luxiaobai.cn/img/redisdata3.png" alt="redisdata3"></p>
+<p>unique:users:20201106代表2020-11-06这天的独立访问用户的Bitmaps</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; setbit unique:users:20201106 1 1</span><br><span class="line">(integer) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit unique:users:20201106 6 1</span><br><span class="line">(integer) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit unique:users:20201106 11 1</span><br><span class="line">(integer) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit unique:users:20201106 15 1</span><br><span class="line">(integer) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit unique:users:20201106 19 1</span><br><span class="line">(integer) 0</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>很多应用的用户id以一个指定数字（例如10000） 开头， 直接将用户id和Bitmaps的偏移量对应势必会造成一定的浪费， 通常的做法是每次做setbit操作时将用户id减去这个指定数字。</p>
+<p>在第一次初始化Bitmaps时， 假如偏移量非常大， 那么整个初始化过程执行会比较慢， 可能会造成Redis的阻塞。</p>
+</blockquote>
+<h2 id="getbit"><a href="#getbit" class="headerlink" title="getbit"></a>getbit</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getbit &lt;key&gt; &lt;offset&gt;        获取Bitmaps中某个偏移量的值</span><br></pre></td></tr></table></figure>
+
+<p>获取键的第offset位的值(从0开始算</p>
+<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><p>获取 id=8的用户是否在2020-11-06这天访问过， 返回0说明没有访问过：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; getbit unique:users:20201106 8</span><br><span class="line">(integer) 0</span><br><span class="line">127.0.0.1:6379&gt; getbit unique:users:20201106 1</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; getbit unique:users:20201106 100</span><br><span class="line">(integer) 0</span><br></pre></td></tr></table></figure>
+
+<p>==因为100根本不存在,所以返回0==</p>
+<h2 id="bitcount"><a href="#bitcount" class="headerlink" title="bitcount"></a><strong>bitcount</strong></h2><p>统计字符串被设置为1的bit数。一般情况下，给定的整个字符串都会被进行计数，通过指定额外的 start 或 end 参数，可以让计数只在特定的位上进行。start 和 end 参数的设置，都可以使用负数值：比如 -1 表示最后一个位，而 -2 表示倒数第二个位，start、end 是指bit组的字节的下标数，二者皆包含。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bitcount&lt;key&gt;[start end]  统计字符串从start字节到end字节比特值为1的数量</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h3><p>2022-11-06这天的独立访问用户数量</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; bitcount unique:users:20201106</span><br><span class="line">(integer) 5</span><br></pre></td></tr></table></figure>
+
+
+
+<p>start和end代表起始和结束字节数， 下面操作计算用户id在第1个字节到第3个字节之间的独立访问用户数， 对应的用户id是11， 15， 19。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; bitcount unique:users:20201106 1 3</span><br><span class="line">(integer) 3</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#1个字节8位</span></span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>redis的setbit设置或清除的是bit位置，而bitcount计算的是byte位置。</strong></p>
+</blockquote>
+<h2 id="bitop"><a href="#bitop" class="headerlink" title="bitop"></a><strong>bitop</strong></h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bitop and(or/not/xor) &lt;destkey&gt; [key...]</span><br></pre></td></tr></table></figure>
+
+<p>bitop是一个复合操作， 它可以做多个Bitmaps的and（交集） 、 or（并集） 、 not（非） 、 xor（异或） 操作并将结果保存在destkey中。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; setbit unique:users:20201104 1 1</span><br><span class="line">(integer) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit unique:users:20201104 2 1</span><br><span class="line">(integer) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit unique:users:20201104 5 1</span><br><span class="line">(integer) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit unique:users:20201104 9 1</span><br><span class="line">(integer) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit unique:users:20201103 0 1</span><br><span class="line">(integer) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit unique:users:20201103 1 1</span><br><span class="line">(integer) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit unique:users:20201103 4 1</span><br><span class="line">(integer) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit unique:users:20201103 9 1</span><br><span class="line">(integer) 0</span><br><span class="line">127.0.0.1:6379&gt; bitop and unique:users:and:20201104_03 unique:users:20201103 unique:users:20201104</span><br><span class="line">(integer) 2</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Bitmaps与set对比"><a href="#Bitmaps与set对比" class="headerlink" title="Bitmaps与set对比"></a><strong>Bitmaps与set对比</strong></h2><p>假设网站有1亿用户， 每天独立访问的用户有5千万， 如果每天用集合类型和Bitmaps分别存储活跃用户可以得到表</p>
+<table>
+    <tr align="center">
+        <th colspan="9">set和Bitmaps存储独立用户空间对比</th>
+    </tr >
+    <tr align="center">
+        <td>数据类型</td>
+        <td>一天</td>
+        <td>一个月</td>
+    <td>一年</td>
+    </tr>
+    <tr align="center">
+        <td>集合类型</td>
+        <td>400MB</td>
+        <td>12GB</td>
+        <td>144GB</td>
+    </tr>
+    <tr align="center">
+        <td>Bitmaps</td>
+        <td>12.5MB</td>
+        <td>375MB</td>
+        <td>4.5GB</td>
+    </tr>
+</table>
+
+<p>很明显， 这种情况下使用Bitmaps能节省很多的内存空间， 尤其是随着时间推移节省的内存还是非常可观的</p>
+<p>但Bitmaps并不是万金油， 假如该网站每天的独立访问用户很少， 例如只有10万（大量的僵尸用户） ， 那么两者的对比如下表所示， 很显然， 这时候使用Bitmaps就不太合适了， 因为基本上大部分位都是0</p>
+<table>
+    <tr>
+        <th align="center" colspan="9">set和Bitmaps存储一天活跃用户对比（独立用户比较少)</th>
+    </tr >
+    <tr align="center">
+        <td>数据类型</td>
+        <td>每个userid占用空间</td>
+        <td>需要存储的用户量</td>
+        <td>全部内存量</td>
+    </tr>
+    <tr align="center">
+        <td>集合类型</td>
+        <td>64位</td>
+        <td>100000</td>
+        <td>64位*100000 = 800KB</td>
+    </tr>
+    <tr align="center">
+        <td>Bitmaps</td>
+        <td>1位</td>
+        <td>100000000</td>
+        <td>1位*100000000 = 12.5MB</td>
+    </tr>
+</table>
+
+
+
+<h2 id="HyperLogLog"><a href="#HyperLogLog" class="headerlink" title="HyperLogLog"></a><strong>HyperLogLog</strong></h2><blockquote>
+<p>在工作当中，我们经常会遇到与统计相关的功能需求，比如统计网站PV（PageView页面访问量）,可以使用Redis的incr、incrby轻松实现。但像UV（UniqueVisitor，独立访客）、独立IP数、搜索记录数等需要去重和计数的问题如何解决？这种求集合中不重复元素个数的问题称为基数问题。解决基数问题有很多种方案：</p>
+<p>（1）数据存储在MySQL表中，使用distinct count计算不重复个数</p>
+<p>（2）使用Redis提供的hash、set、bitmaps等数据结构来处理</p>
+<p>以上的方案结果精确，但随着数据不断增加，导致占用空间越来越大，对于非常大的数据集是不切实际的。能否能够降低一定的精度来平衡存储空间？</p>
+<p>Redis推出了HyperLogLog. Redis HyperLogLog 是用来做基数统计的算法，HyperLogLog 的优点是，在输入元素的数量或者体积非常非常大时，计算基数所需的空间总是固定的、并且是很小的。在 Redis 里面，每个 HyperLogLog 键只需要花费 12 KB 内存，就可以计算接近 2^64 个不同元素的基数。这和计算基数时，元素越多耗费内存就越多的集合形成鲜明对比。但是，因为 HyperLogLog 只会根据输入元素来计算基数，而不会储存输入元素本身，所以 HyperLogLog 不能像集合那样，返回输入的各个元素。什么是基数?比如数据集 {1, 3, 5, 7, 5, 7, 8}， 那么这个数据集的基数集为 {1, 3, 5 ,7, 8}, 基数(不重复元素)为5。 基数估计就是在误差可接受的范围内，快速计算基数。</p>
+</blockquote>
+<h3 id="命令-1"><a href="#命令-1" class="headerlink" title="命令"></a>命令</h3><h4 id="pfadd"><a href="#pfadd" class="headerlink" title="pfadd"></a>pfadd</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pfadd &lt;key&gt;&lt;element&gt;[element...]		添加指定元素到HyperLogLog中</span><br></pre></td></tr></table></figure>
+
+<p>将所有元素添加到指定HyperLogLog数据结构中。如果执行命令后HLL估计的近似基数发生变化，则返回1，否则返回0。</p>
+<h4 id="pfcount"><a href="#pfcount" class="headerlink" title="pfcount"></a>pfcount</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">pfcount &lt;key&gt;[key...]  计算HLL的近似基数，可以计算多个HLL</span><br><span class="line"></span><br><span class="line">127.0.0.1:6379&gt; pfadd hll1 &quot;redis&quot; &quot;mysql&quot;</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; pfadd hll1 &quot;redis&quot;</span><br><span class="line">(integer) 0</span><br><span class="line">127.0.0.1:6379&gt; pfcount hll1</span><br><span class="line">(integer) 2</span><br><span class="line">127.0.0.1:6379&gt; pfadd hll1 &quot;mongodb&quot;</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; pfadd h2 &quot;redis&quot;</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; pfadd h2 &quot;java&quot;</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; pfcount hll1 h2</span><br><span class="line">(integer) 4</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="pfmerge"><a href="#pfmerge" class="headerlink" title="pfmerge"></a>pfmerge</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">pfmerge &lt;destkey&gt;&lt;sourcekey&gt;[sourcekey...] .  将一个或多个HLL合并后的结果存储在另一个HLL中 比如每月活跃用户可以使用每天的活跃用户来合并计算可得</span><br><span class="line">127.0.0.1:6379&gt; pfcount hll1 h2</span><br><span class="line">(integer) 4</span><br><span class="line">127.0.0.1:6379&gt; pfmerge h3 hll1 h2</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; pfcount h3</span><br><span class="line">(integer) 4</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Geospatial"><a href="#Geospatial" class="headerlink" title="Geospatial"></a><strong>Geospatial</strong></h2><blockquote>
+<p>GEO，Geographic，地理信息的缩写。该类型，就是元素的2维坐标，在地图上就是经纬度。redis基于该类型，提供了经纬度设置，查询，范围查询，距离查询，经纬度Hash等常见操作。</p>
+</blockquote>
+<h3 id="命令-2"><a href="#命令-2" class="headerlink" title="命令"></a>命令</h3><p><strong>geoadd</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">geoadd &lt;key&gt;&lt; longitude&gt;&lt;latitude&gt;&lt;member&gt; [longitude latitude member...]   添加地理位置（经度，纬度，名称）</span><br></pre></td></tr></table></figure>
+
+<p>两极无法直接添加，一般会下载城市数据，直接通过 Java 程序一次性导入。有效的经度从 -180 度到 180 度。有效的纬度从 -85.05112878 度到 85.05112878 度。当坐标位置超出指定范围时，该命令将会返回一个错误。已经添加的数据，是无法再次往里面添加的。</p>
+<h4 id="geopos"><a href="#geopos" class="headerlink" title="geopos"></a><strong>geopos</strong></h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">geodist&lt;key&gt;&lt;member1&gt;&lt;member2&gt;  [m|km|ft|mi ]  获取两个位置之间的直线距离</span><br><span class="line"></span><br><span class="line">127.0.0.1:6379&gt; geodist china:city beijing shanghai km</span><br><span class="line">&quot;1068.1535&quot;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>单位：</p>
+<p>m 表示单位为米[默认值]。</p>
+<p>km 表示单位为千米。</p>
+<p>mi 表示单位为英里。</p>
+<p>ft 表示单位为英尺。</p>
+<p>如果用户没有显式地指定单位参数， 那么 GEODIST 默认使用米作为单位</p>
+</blockquote>
+<h4 id="georadius"><a href="#georadius" class="headerlink" title="georadius"></a><strong>georadius</strong></h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">georadius&lt;key&gt;&lt; longitude&gt;&lt;latitude&gt;radius  m|km|ft|mi   以给定的经纬度为中心，找出某一半径内的元素</span><br><span class="line">经度 纬度 距离 单位</span><br><span class="line">127.0.0.1:6379&gt; georadius china:city 110 30 1000 km</span><br><span class="line">1) &quot;chonggin&quot;</span><br><span class="line">2) &quot;shenzhen&quot;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://luxiaobai.cn/2021/10/08/redis/Redis2/" title="Redis6入门学习(二)" target="_blank" rel="external">https://luxiaobai.cn/2021/10/08/redis/Redis2/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+    <li class="post-copyright-license">
+      <strong>网站同步： </strong> 本博客所有文章也同步至 <a href="https://blog.csdn.net/weixin_45268711" target="_blank" rel="external">CSDN</a>.欢迎关注!
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/luxiaobai007" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/luxiaobai007" target="_blank"><span class="text-dark">路小白</span><small class="ml-1x">Server Developer &amp; Programmer</small></a></h3>
+        <div>生命太短暂,不要去做一些根本没有人想要的东西。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/10/11/redis/Redis3/" title="Redis6入门学习(三)"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2021/10/08/redis/Redis1/" title="Redis6入门学习(一)"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/luxiaobai007" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/luxiaobai404" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://blog.csdn.net/weixin_45268711" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2021 John Doe
+        
+        <!-- <div class="publishby">
+        	Theme by <a href="https://github.com/luxiaobai007" target="_blank"> luxiaobai007 </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div> -->
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
